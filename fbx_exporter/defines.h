@@ -27,7 +27,7 @@ enum PROP_MASK {
 #ifdef __cplusplus
 #include "glm.hpp"
 
-#define PRECISION_DOUBLE 1
+#define PRECISION_DOUBLE 0
 
 #if PRECISION_DOUBLE
 #define DATA_TYPE double
