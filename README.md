@@ -23,7 +23,13 @@ This is currently in planning phase. The idea is to ensure I include as much nec
 ### 3.) Animation Exporting [Future]
 After doing Material Exporting (Which shouldn't take too long), I wish to add Animation Support. The Vertex Structure will be altered if animation export is on. When I get here, i will be more thurough on how this will be implemented. 
 
-## Questions: 
+## Questions:
+#### Q: HELP! I don't see the .msh files!
+Did you do the following:
+* have the "libfbxsdk.dll" in the same directory as the executable? If not, then the dll are in vendor/fbxsdk/lib/x64.
+	* Use the Debug one if using Debug Configuration
+	* Use the Release one if using Release Configuration
+
 #### Q: Why not export Binormals?  
 The binormal can be obtained by doing a cross product using the normal and tangent.
 Example:
