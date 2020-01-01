@@ -1,6 +1,8 @@
 .vs
 bin
-.bin
-.msh
-.mat
-.anm
+
+*.fbx
+*.bin
+*.msh
+*.mat
+*.anm
