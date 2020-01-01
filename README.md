@@ -28,16 +28,20 @@ After doing Material Exporting (Which shouldn't take too long), I wish to add An
 The binormal can be obtained by doing a cross product using the normal and tangent.
 Example:
 ```
-//Setup TBN
-vec3 T = normalize(mat3(mvp.model_transposed_inversed) * tangent.xyz);
-vec3 N = normalize(mat3(mvp.model_transposed_inversed) * normal.xyz);
+vec3 T = normalize(vec3(model * vec4(aTangent, 0.0)));
+vec3 N = normalize(vec3(model * vec4(aNormal, 0.0)));
+// re-orthogonalize T with respect to N
+T = normalize(T - dot(T, N) * N);
+// then retrieve perpendicular vector B with the cross product of T and N
+vec3 B = cross(N, T);
 
-T = normalize(T - dot(T,N) * N);
-
-vec3 B = cross(N,T); //<--Right here is the binormal.
-
-frag_TBN = mat3(T, B, N);
+mat3 TBN = mat3(T, B, N);
 ```
+ref: https://learnopengl.com/Advanced-Lighting/Normal-Mapping @ "One last thing" title.
+#### Q: Wait... Isn't that the Bitangent???
+Thats correct. However, I wish to be consistent within FBX's terms to avoid confusion. They use "Binormals" within their function names such as **GetElementBinormalCount** and **GetElementBinormal**
+
+
 #### Q: What data type is used when exporting these mesh data?
 By default, the vector data types are floats.  
 
