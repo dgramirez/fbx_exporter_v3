@@ -26,9 +26,9 @@ After doing Material Exporting (Which shouldn't take too long), I wish to add An
 ## Questions:
 #### Q: HELP! I don't see the .msh files!
 Did you do the following:
-* have the "libfbxsdk.dll" in the same directory as the executable? If not, then the dll are in vendor/fbxsdk/lib/x64.
-	* Use the Debug one if using Debug Configuration
-	* Use the Release one if using Release Configuration
+* have the "libfbxsdk.dll" in the same directory as the executable? If not, then the dll are in "./fbx_exporter/vendor/fbxsdk/lib".
+	* Copy the Debug one if using Debug Configuration
+	* Copy the Release one if using Release Configuration
 
 #### Q: Why not export Binormals?  
 The binormal can be obtained by doing a cross product using the normal and tangent.
