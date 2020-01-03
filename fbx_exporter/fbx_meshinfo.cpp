@@ -1,7 +1,7 @@
 #include "fbx_meshinfo.h"
 #include <unordered_map>
 #define GLM_ENABLE_EXPERIMENTAL
-#include <gtx/hash.hpp>
+#include "gtx/hash.hpp"
 
 #define CHECK_FAIL(x, y) {if (x & y) return x;}
 
@@ -374,7 +374,11 @@ void vertex_negate_y(const int& _countPV, int** _index, const int& _countCP, Ver
 	//Change Triangle Order
 	int* index = *_index;
 	for (int i = 0; i < _countPV; i += 3)
-		index[i] ^= index[i + 1], index[i + 1] ^= index[i], index[i] ^= index[i + 1];
+	{
+		index[i] ^= index[i + 1]; 
+		index[i + 1] ^= index[i];
+		index[i] ^= index[i + 1];
+	}
 }
 void vertex_compactify(const int& _countPV, int** _index, int& _countCP, Vertex** _vertex)
 {
@@ -408,6 +412,17 @@ void vertex_compactify(const int& _countPV, int** _index, int& _countCP, Vertex*
 	delete[] *_index;
 	*_vertex = new_vertex;
 	*_index = new_index;
+}
+void vertex_scale(const float& _scale, int& _countCP, Vertex** _vertex)
+{
+	Vertex* vertex = *_vertex;
+	DATA_TYPE temp = 0;
+	for (int i = 0; i < _countCP; ++i)
+	{
+		temp = vertex[i].pos.w;
+		vertex[i].pos *= _scale;
+		vertex[i].pos.w = temp;
+	}
 }
 
 unsigned short set_vertex(FbxVector4* _vertex, FbxArray<FbxVector2>& _uv, FbxArray<FbxVector4>& _normal, FbxArray<FbxVector4>& _tangent, int& _outCountPV, int** _outIndex, int& _outCountCP, Vertex** _outVertex)
@@ -499,16 +514,22 @@ unsigned short setup_vertex(FbxMesh* _fbxMesh, const unsigned short& _failMask, 
 
 	return 0;
 }
-unsigned short export_mesh(const char* _filepath, const int& _iteration, const int& _countPV, int* _index, int& _countCP, Vertex* _vertex)
+unsigned short export_mesh(const char* _filepath, const int& _iteration, const int& _propertyMask, const float& _scale, const int& _countPV, int* _index, int& _countCP, Vertex* _vertex)
 {
 	//Compactify
 	vertex_compactify(_countPV, &_index, _countCP, &_vertex);
 
+	//Scale
+	if (_propertyMask & PROP_MASK::SCALE)
+		vertex_scale(_scale, _countCP, &_vertex);
+
 	//Flip V
-	vertex_flip_v(_countCP, &_vertex);
+	if (_propertyMask & PROP_MASK::FLIP_V)
+		vertex_flip_v(_countCP, &_vertex);
 
 	//Negate Y
-	vertex_negate_y(_countPV, &_index, _countCP, &_vertex);
+	if (_propertyMask & PROP_MASK::NEGATE_Y)
+		vertex_negate_y(_countPV, &_index, _countCP, &_vertex);
 
 	//Export
 	FILE* file = 0;

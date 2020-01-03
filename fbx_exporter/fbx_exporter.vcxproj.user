@@ -5,11 +5,11 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>MyPlane.fbx -o MyPlane.msh</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>MyPlane.fbx -o MyPlane.msh -v -y</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>MyPlane.fbx -o MyPlane.msh</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>MyPlane.fbx -o MyPlane.msh -v -y</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>

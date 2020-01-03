@@ -2,7 +2,7 @@
 #include "fbx_meshinfo.h"
 
 unsigned short get_scene(const char *_meshFilepath, FbxScene **_outFbxScene);
-unsigned short process_fbx(FbxNode *_fbxScene, const unsigned short &_failMask, const char* _meshFilepath);
+unsigned short process_fbx(FbxNode *_fbxScene, const unsigned char _propertyMask, const float& _scale, const unsigned short &_failMask, const char* _meshFilepath);
 
 unsigned short fbx_export(const char* _fbxFilepath, const char* _meshFilepath, const char* _materialFilepath, const char* _animationFilepath, const float _scale, const unsigned char _propertyMask, const unsigned short _noFailMask)
 {
@@ -12,7 +12,7 @@ unsigned short fbx_export(const char* _fbxFilepath, const char* _meshFilepath, c
 	if (failure)
 		return failure;
 
-	process_fbx(fbxScene->GetRootNode(), _noFailMask, _meshFilepath);
+	process_fbx(fbxScene->GetRootNode(), _propertyMask, _scale, _noFailMask, _meshFilepath);
 	return failure;
 }
 
@@ -50,7 +50,7 @@ unsigned short get_scene(const char* _meshFilepath, FbxScene** _outFbxScene)
 	//Return Success
 	return 0;
 }
-unsigned short process_fbx(FbxNode *_fbxNode, const unsigned short& _failMask, const char* _meshFilepath)
+unsigned short process_fbx(FbxNode *_fbxNode, const unsigned char _propertyMask, const float &_scale, const unsigned short& _failMask, const char* _meshFilepath)
 {
 	//Get the amount of children the node has
 	unsigned int child_count = _fbxNode->GetChildCount();
@@ -76,28 +76,23 @@ unsigned short process_fbx(FbxNode *_fbxNode, const unsigned short& _failMask, c
 			#endif //Material Loading
 			
 			#if 0
-
-						//Setup Animation Data (WILL DO ANOTHER TIME)
-						VertexAnm* vertexanm = nullptr;
-						Bindpose* bindpose = nullptr;
-						Bindpose* bindpose_inv = nullptr;
-						Clip* clip = nullptr;
-			//			setup_animation();
+			//Setup Animation Data (WILL DO ANOTHER TIME)
+			VertexAnm* control_point_anm = nullptr;
+			Bindpose* bindpose = nullptr;
+			Bindpose* bindpose_inv = nullptr;
+			Clip* clip = nullptr;
+//			setup_animation();
 			#endif //Animation Loading
 
 			//Export Mesh
-			export_mesh(_meshFilepath, i, count_pv, polygon_vertex, count_cp, control_point);
+			export_mesh(_meshFilepath, i, _propertyMask, _scale, count_pv, polygon_vertex, count_cp, control_point);
 
 			#if 0
 			//Export Mesh
-			if (vertexanm)
-			{
-//				export_mesh(index, vertexanm);
-			}
+			if (control_point_anm)
+				export_mesh(_meshFilepath, i, _failMask, count_pv, polygon_vertex, count_cp, control_point_anm);
 			else
-			{
-//				export_mesh(index, vertex);
-			}
+				export_mesh(_meshFilepath, i, _failMask, count_pv, polygon_vertex, count_cp, control_point);
 
 			//Export Material
 			if (material)
@@ -114,7 +109,7 @@ unsigned short process_fbx(FbxNode *_fbxNode, const unsigned short& _failMask, c
 
 		}
 
-		process_fbx(child_node, _failMask, _meshFilepath);
+		process_fbx(child_node, _propertyMask, _scale, _failMask, _meshFilepath);
 	}
 
 	return 0;

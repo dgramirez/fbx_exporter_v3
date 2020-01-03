@@ -20,8 +20,9 @@ enum FAIL_MASK {
 	W_JOKE = 0x8000
 };
 enum PROP_MASK {
-	FLIP_V = 0x1,
-	NEGATE_Y = 0x2,
+	SCALE = 0x1,
+	FLIP_V = 0x2,
+	NEGATE_Y = 0x4
 };
 
 #ifdef __cplusplus

@@ -199,6 +199,7 @@ int main(_In_ int argc, _In_reads_(argc) _Pre_z_ char** argv, _In_z_ char** envp
 				show_error_arg("Invalid Scale Value: ", argv[i]);
 				return 0;
 			}
+			property_mask |= SCALE;
 			continue;
 		}
 
@@ -259,7 +260,6 @@ void show_error(const char* display_error)
 	printf("\t\t-[oma] [Filepath]: Create Mesh, Material and Animation File [reference -o -m -a for Default]\n");
 	printf("\t\t-s [Float]: Scale of Model [Default: 1.0]\n");
 	printf("\t\t-y: Negate the Y value (Change Up Direction). [Default: Off]\n");
-	printf("\t\t-c: Add Color to Vertex Based on Algorithm (Default: Off)\n");
 	printf("\t\t-f [Integer]: Force Flags to ensure optional data is applied correctly [Default: 0xB007]\n");
 	printf("\n\tError: %s\n\n", display_error);
 }
@@ -273,7 +273,6 @@ void show_error_arg(const char* display_error, const char* argument)
 	printf("\t\t-[oma] [Filepath]: Create Mesh, Material and Animation File [reference -o -m -a for Default]\n");
 	printf("\t\t-s [Float]: Scale of Model [Default: 1.0]\n");
 	printf("\t\t-y: Negate the Y value (Change Up Direction). [Default: Off]\n");
-	printf("\t\t-c: Add Color to Vertex Based on Algorithm (Default: Off)\n");
 	printf("\t\t-f [Integer]: Force Flags to ensure optional data is applied correctly [Default: 0xB007]\n");
 	printf("\n\tError: %s %s\n\n", display_error, argument);
 }
@@ -368,7 +367,6 @@ void print_variales(const char* mesh_file, const char* mat_file, const char* anm
 	printf("Scale: %f\n",				scale);
 	printf("Flip V: %d\n",				prop_mask & 0x1);
 	printf("Negate Y: %d\n",			prop_mask & 0x2);
-	printf("Use Color: %d\n",			prop_mask & 0x4);
 	printf("Fail Mask: %d\n",			fail_mask);
 }
 void print_failure(unsigned short code)
